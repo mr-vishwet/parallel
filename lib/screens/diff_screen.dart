@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../core/routes.dart';
 import '../core/theme.dart';
@@ -11,9 +11,12 @@ import 'screen_helpers.dart';
 /// take. Starts the live merge review (or reuses the one already open
 /// for this pair, so selections survive navigation).
 class DiffScreen extends StatefulWidget {
+  /// Creates a [DiffScreen].
   const DiffScreen({required this.sourceId, required this.targetId, super.key});
 
+  /// The source id.
   final String sourceId;
+  /// The target id.
   final String targetId;
 
   @override

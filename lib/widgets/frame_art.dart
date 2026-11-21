@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../core/theme.dart';
 
@@ -9,6 +9,7 @@ import '../core/theme.dart';
 /// sky, a horizon, and a label. It is illustrative UI art, not a still —
 /// real frame thumbnails arrive with the media pipeline in phase 2.
 class FrameArt extends StatelessWidget {
+  /// Creates a [FrameArt].
   const FrameArt({
     required this.kind,
     this.height = 140,
@@ -18,7 +19,9 @@ class FrameArt extends StatelessWidget {
 
   /// 'boathouse' | 'harbour' | 'rooftop' | anything else for a neutral frame.
   final String kind;
+  /// The height.
   final double height;
+  /// The label.
   final String? label;
 
   @override

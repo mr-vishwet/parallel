@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../engine/branch_engine.dart';
 import '../engine/demo_data.dart';
@@ -10,10 +10,13 @@ import '../services/sync_client.dart';
 
 /// Inherited access to the [AppController] for every screen and widget.
 class AppScope extends InheritedWidget {
+  /// Creates an [AppScope].
   const AppScope({required this.controller, required super.child, super.key});
 
+  /// The app controller.
   final AppController controller;
 
+  /// Returns the [AppController] for the nearest [AppScope] above [context].
   static AppController of(BuildContext context) {
     final scope = context.dependOnInheritedWidgetOfExactType<AppScope>();
     assert(scope != null, 'AppScope not found above this widget.');
@@ -29,6 +32,7 @@ class AppScope extends InheritedWidget {
 /// conflict resolutions. Held in memory by the controller; the review
 /// itself is a working state, not persisted history.
 class MergeReviewState {
+  /// Creates a [MergeReviewState].
   MergeReviewState({
     required this.sourceId,
     required this.targetId,
@@ -37,23 +41,30 @@ class MergeReviewState {
     Map<String, String>? resolutions,
   }) : resolutions = resolutions ?? {};
 
+  /// The source id.
   final String sourceId;
+  /// The target id.
   final String targetId;
+  /// The diff.
   final DiffResult diff;
+  /// The selected ids.
   final Set<String> selectedIds;
 
   /// Conflicting change id -> 'source' (take the source version) or
   /// 'target' (keep the target's; the change stays behind).
   final Map<String, String> resolutions;
 
+  /// The merge plan for the current selection.
   MergePlan get plan => BranchEngine.planMerge(
         diffResult: diff,
         selectedIds: selectedIds,
         conflictResolution: resolutions,
       );
 
+  /// The number of selected changes.
   int get selectedCount => selectedIds.length;
 
+  /// Whether every conflict in the review is resolved.
   bool get allConflictsResolved =>
       diff.conflicts.every((c) => resolutions.containsKey(c.id));
 }
@@ -65,6 +76,7 @@ class MergeReviewState {
 /// Branching, merging, restoring, snapshotting and creating all need an
 /// account — screens check [canEdit] and route guests to /upgrade.
 class AppController extends ChangeNotifier {
+  /// Creates an [AppController].
   AppController({WorkspaceStore? store, AuthService? auth})
       : _store = store ?? WorkspaceStore(),
         _auth = auth ?? AuthService();
@@ -72,26 +84,40 @@ class AppController extends ChangeNotifier {
   final WorkspaceStore _store;
   final AuthService _auth;
 
+  /// Whether the initial load is still running.
   bool loading = true;
+  /// The workspace.
   Workspace workspace = const Workspace();
+  /// The settings.
   AppSettings settings = const AppSettings();
+  /// The live merge review, if one is active.
   MergeReviewState? review;
 
   /// Changes the last completed merge deliberately left behind, for the
   /// merged screen. Set during [executeMerge] before the review clears.
   List<Change> lastMergeLeftBehind = const [];
+  /// The message from the last sync attempt.
   String? lastSyncMessage;
 
+  /// The auth service.
   AuthService get auth => _auth;
+  /// Whether a user is signed in.
   bool get signedIn => _auth.signedIn;
+  /// Whether the session is a guest session.
   bool get isGuest => _auth.isGuest;
+  /// Whether there is a session (signed in or guest).
   bool get hasSession => _auth.mode != SessionMode.none;
+  /// Whether the user can edit (signed in, not a guest).
   bool get canEdit => _auth.signedIn;
+  /// The signed-in user name, or empty.
   String get userName => _auth.displayName;
+  /// The signed-in user email, or empty.
   String get userEmail => _auth.displayEmail;
 
+  /// The open project.
   Project? get openProject => workspace.openProject;
 
+  /// Returns the project with the given id, or null if there is none.
   Project? projectById(String id) => workspace.projectById(id);
 
   /// Loads persisted state (workspace, settings, auth). Called once at
@@ -455,6 +481,7 @@ class AppController extends ChangeNotifier {
 
   // ------------------------------------------------------------ search
 
+  /// Searches the open project for snapshots matching [query].
   List<SnapshotHit> searchSnapshots(String query) {
     final project = openProject;
     if (project == null) return const [];
@@ -463,16 +490,19 @@ class AppController extends ChangeNotifier {
 
   // ------------------------------------------------------------ auth
 
+  /// Continues as a guest (view-only, no account).
   Future<void> continueAsGuest() async {
     await _auth.continueAsGuest();
     notifyListeners();
   }
 
+  /// Signs in with [email] and [password].
   Future<void> signIn({required String email, required String password}) async {
     await _auth.signIn(email: email, password: password);
     notifyListeners();
   }
 
+  /// Creates an account and starts verification.
   Future<void> createAccount({
     required String name,
     required String email,
@@ -486,16 +516,19 @@ class AppController extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Verifies the pending signup with [code].
   Future<void> verify(String code) async {
     await _auth.verify(code);
     notifyListeners();
   }
 
+  /// Generates a fresh verification code for the pending signup.
   Future<void> resendCode() async {
     await _auth.resendCode();
     notifyListeners();
   }
 
+  /// Signs out and clears the session.
   Future<void> signOut() async {
     await _auth.signOut();
     review = null;
@@ -516,6 +549,7 @@ class AppController extends ChangeNotifier {
 
   // ------------------------------------------------------------ settings
 
+  /// Updates the connection settings.
   Future<void> setConnection({
     bool? github,
     bool? frameio,
@@ -530,12 +564,14 @@ class AppController extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Turns the review link on or off.
   Future<void> setReviewLink(bool on) async {
     settings = settings.copyWith(reviewLinkOn: on);
     await _saveSettings();
     notifyListeners();
   }
 
+  /// Sets the sync server base URL.
   Future<void> setSyncBaseUrl(String url) async {
     settings = settings.copyWith(syncBaseUrl: url.trim());
     await _saveSettings();
@@ -584,6 +620,7 @@ class AppController extends ChangeNotifier {
   /// The export document for the current workspace.
   String exportJson() => ExportService.workspaceJson(workspace);
 
+  /// Copies the export JSON to the clipboard.
   Future<void> copyExport() async {
     await ExportService.copyToClipboard(workspace);
   }

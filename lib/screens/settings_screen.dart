@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../core/constants.dart';
 import '../core/routes.dart';
@@ -9,6 +9,7 @@ import 'screen_helpers.dart';
 
 /// 20 — Settings: project, sharing, sync, and the danger zone.
 class SettingsScreen extends StatefulWidget {
+  /// Creates a [SettingsScreen].
   const SettingsScreen({super.key});
 
   @override
@@ -73,7 +74,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     sub: '${project.kind} · ${project.subtitle}',
                   ),
                   const Divider(),
-                  _Row(
+                  const _Row(
                     icon: Icons.storage_outlined,
                     title: 'Storage',
                     sub: '${DemoFigures.storageOnDevice} on this device · '
@@ -126,7 +127,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                     ),
                     value: settings.reviewLinkOn,
-                    activeColor: ParallelPalette.cutRed,
+                    activeThumbColor: ParallelPalette.cutRed,
                     onChanged: (value) {
                       if (!requireAccount(
                         context,

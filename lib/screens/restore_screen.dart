@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../core/format.dart';
 import '../core/routes.dart';
@@ -12,13 +12,16 @@ import 'screen_helpers.dart';
 /// anything after it. The scope — what returns, what stays changed — is
 /// the whole point.
 class RestoreScreen extends StatefulWidget {
+  /// Creates a [RestoreScreen].
   const RestoreScreen({
     required this.branchId,
     required this.snapshotId,
     super.key,
   });
 
+  /// The branch id.
   final String branchId;
+  /// The snapshot id.
   final String snapshotId;
 
   @override

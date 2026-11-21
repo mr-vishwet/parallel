@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../core/theme.dart';
 import '../engine/branch_engine.dart';
@@ -10,6 +10,7 @@ import '../widgets/frame_art.dart';
 /// 15 — The conflict: two openings, one film. You pick — PARALLEL never
 /// guesses. The losing shot stays on its branch, exactly where it was.
 class ConflictScreen extends StatelessWidget {
+  /// Creates a [ConflictScreen].
   const ConflictScreen({
     required this.changeId,
     required this.sourceId,
@@ -17,8 +18,11 @@ class ConflictScreen extends StatelessWidget {
     super.key,
   });
 
+  /// The change id.
   final String changeId;
+  /// The source id.
   final String sourceId;
+  /// The target id.
   final String targetId;
 
   /// Records a resolution, ensuring a live review exists first (deep
@@ -132,21 +136,21 @@ class ConflictScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 16),
-            Card(
+            const Card(
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       'What happens to the other one',
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
-                    const SizedBox(height: 6),
-                    const Text(
+                    SizedBox(height: 6),
+                    Text(
                       'The losing shot stays on its branch, exactly where '
                       'it was. Nothing is deleted by a merge.',
                       style: TextStyle(

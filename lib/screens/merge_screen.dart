@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../core/routes.dart';
 import '../core/theme.dart';
@@ -12,9 +12,12 @@ import 'screen_helpers.dart';
 /// merge button waits behind the conflict — the app never merges past a
 /// call the user has not made.
 class MergeScreen extends StatefulWidget {
+  /// Creates a [MergeScreen].
   const MergeScreen({required this.sourceId, required this.targetId, super.key});
 
+  /// The source id.
   final String sourceId;
+  /// The target id.
   final String targetId;
 
   @override
@@ -71,8 +74,12 @@ class _MergeScreenState extends State<MergeScreen> {
     final selectedChanges = review.diff.changes
         .where((c) => review.selectedIds.contains(c.id))
         .toList();
+    // Only selected conflicts block landing: an unselected conflict is
+    // left behind, which is itself the resolution (keep the target's).
     final unresolved = review.diff.conflicts
-        .where((c) => !review.resolutions.containsKey(c.id))
+        .where((c) =>
+            review.selectedIds.contains(c.id) &&
+            !review.resolutions.containsKey(c.id))
         .toList();
     final nextId = BranchEngine.nextSnapshotId(target);
 

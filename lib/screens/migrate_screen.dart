@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../core/routes.dart';
 import '../core/theme.dart';
@@ -7,6 +7,7 @@ import '../widgets/adaptive_shell.dart';
 /// 27 — Moving your data: nothing lost. Guests create nothing, so 0
 /// projects, 0 branches, 0 snapshots move.
 class MigrateScreen extends StatelessWidget {
+  /// Creates a [MigrateScreen].
   const MigrateScreen({super.key});
 
   @override
@@ -54,11 +55,11 @@ class MigrateScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            Card(
+            const Card(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(16, 6, 16, 6),
+                padding: EdgeInsets.fromLTRB(16, 6, 16, 6),
                 child: Column(
-                  children: const [
+                  children: [
                     _MoveRow(label: 'Projects'),
                     Divider(),
                     _MoveRow(label: 'Branches'),
@@ -69,9 +70,9 @@ class MigrateScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-            Card(
+            const Card(
               color: ParallelPalette.paper2,
-              child: const Padding(
+              child: Padding(
                 padding: EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

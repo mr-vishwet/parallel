@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../core/routes.dart';
 import '../core/theme.dart';
@@ -14,6 +14,7 @@ import 'screen_helpers.dart';
 /// needs the sync server (see Settings → Sync); the toggle records the
 /// intent and the screen says so.
 class ConnectedScreen extends StatelessWidget {
+  /// Creates a [ConnectedScreen].
   const ConnectedScreen({super.key});
 
   @override
@@ -101,9 +102,9 @@ class ConnectedScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-            Card(
+            const Card(
               color: ParallelPalette.paper2,
-              child: const Padding(
+              child: Padding(
                 padding: EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -219,7 +220,7 @@ class _ConnectionRow extends StatelessWidget {
           Switch(
             value: connected,
             onChanged: onChanged,
-            activeColor: ParallelPalette.cutRed,
+            activeThumbColor: ParallelPalette.cutRed,
           ),
         ],
       ),

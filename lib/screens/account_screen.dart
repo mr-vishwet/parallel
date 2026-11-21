@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../core/constants.dart';
 import '../core/routes.dart';
@@ -8,6 +8,7 @@ import '../widgets/adaptive_shell.dart';
 
 /// 28 — Account home: profile, projects, storage, collaborators.
 class AccountScreen extends StatelessWidget {
+  /// Creates an [AccountScreen].
   const AccountScreen({super.key});
 
   @override
@@ -143,20 +144,20 @@ class AccountScreen extends StatelessWidget {
                     ),
                   ),
                   const Divider(),
-                  _Row(
+                  const _Row(
                     icon: Icons.storage_outlined,
                     title: 'Storage',
                     sub: '${DemoFigures.storageOnDevice} on this device · '
                         'demo figure',
                   ),
                   const Divider(),
-                  _Row(
+                  const _Row(
                     icon: Icons.people_outline,
                     title: 'Collaborators',
                     sub: 'Dev · can branch and merge (demo)',
                   ),
                   const Divider(),
-                  _Row(
+                  const _Row(
                     icon: Icons.notifications_outlined,
                     title: 'Notifications',
                     sub: 'Merges and mentions only',
@@ -200,7 +201,7 @@ class AccountScreen extends StatelessWidget {
                           value: '${workspace.mergesInReview}',
                           label: 'in review',
                         ),
-                        _Stat(
+                        const _Stat(
                           value: DemoFigures.storageOnDevice,
                           label: 'on device',
                         ),

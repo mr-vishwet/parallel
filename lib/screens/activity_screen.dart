@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../core/theme.dart';
 import '../engine/models.dart';
@@ -8,6 +8,7 @@ import '../widgets/adaptive_shell.dart';
 /// 19 — Activity: every branch, merge and restore, with the person
 /// attached. Nothing here is automatic.
 class ActivityScreen extends StatelessWidget {
+  /// Creates an [ActivityScreen].
   const ActivityScreen({super.key});
 
   @override

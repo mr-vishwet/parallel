@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../core/format.dart';
 import '../core/routes.dart';
@@ -10,6 +10,7 @@ import '../widgets/adaptive_shell.dart';
 
 /// 18 — Search: snapshots across every branch, plus the related scene.
 class SearchScreen extends StatefulWidget {
+  /// Creates a [SearchScreen].
   const SearchScreen({super.key});
 
   @override

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../core/routes.dart';
 import '../core/theme.dart';
@@ -12,6 +12,7 @@ import 'screen_helpers.dart';
 /// shown on this screen, clearly labelled as a demo code, so the flow is
 /// completable. Real email verification arrives with the backend.
 class VerifyScreen extends StatefulWidget {
+  /// Creates a [VerifyScreen].
   const VerifyScreen({super.key});
 
   @override

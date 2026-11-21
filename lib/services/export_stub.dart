@@ -2,6 +2,7 @@
 /// unsupported and the UI falls back to clipboard copy.
 bool get canSaveFile => false;
 
+/// Saves the export JSON to a file and returns its path.
 Future<String> saveExportFile(String json, String fileName) async {
   throw UnsupportedError(
     'Saving a file is not available on web in v0.1 — copy instead.',

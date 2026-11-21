@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../core/format.dart';
 import '../core/routes.dart';
@@ -13,6 +13,7 @@ import 'screen_helpers.dart';
 /// 02 — The branch map: four glowing rails, the branch chips, and the
 /// stepper to move between snapshots on the selected branch.
 class BranchMapScreen extends StatefulWidget {
+  /// Creates a [BranchMapScreen].
   const BranchMapScreen({super.key});
 
   @override
@@ -184,9 +185,9 @@ class _BranchMapScreenState extends State<BranchMapScreen> {
                               style: AppTheme.mono(size: 13),
                             ),
                           ),
-                          Text(
+                          const Text(
                             'step through the branch',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 12,
                               color: ParallelPalette.muted,
                             ),

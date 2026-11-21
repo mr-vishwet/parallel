@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 /// PARALLEL theme — the V7 palette: warm paper, dark ink, cut-red accent.
@@ -11,31 +11,51 @@ class ParallelPalette {
   ParallelPalette._();
 
   // Warm paper backgrounds (V7 tokens BG0/BG1/BG2).
+  /// The paper color.
   static const Color paper = Color(0xFFF4F3F0);
+  /// The paper2 color.
   static const Color paper2 = Color(0xFFEDEBE7);
+  /// The paper3 color.
   static const Color paper3 = Color(0xFFE7E5E4);
 
   // Ink scale.
+  /// The ink color.
   static const Color ink = Color(0xFF1C1917);
+  /// The secondary color.
   static const Color secondary = Color(0xFF57534E);
+  /// The muted color.
   static const Color muted = Color(0xFF78716C);
 
   // Accents.
+  /// The cut red color.
   static const Color cutRed = Color(0xFFB03220);
+  /// The cut red deep color.
   static const Color cutRedDeep = Color(0xFF8F2718);
+  /// The amber cta color.
   static const Color amberCta = Color(0xFFD97706);
+  /// The green color.
   static const Color green = Color(0xFF34D399);
+  /// The amber color.
   static const Color amber = Color(0xFFFBBF24);
+  /// The cyan color.
   static const Color cyan = Color(0xFF67E8F9);
+  /// The pink color.
   static const Color pink = Color(0xFFF472B6);
+  /// The blue color.
   static const Color blue = Color(0xFF60A5FA);
+  /// The violet color.
   static const Color violet = Color(0xFFA78BFA);
 
   // Surfaces.
+  /// The glass color.
   static const Color glass = Color(0xA6FFFFFF); // white 65%
+  /// The glass strong color.
   static const Color glassStrong = Color(0xD1FFFFFF); // white 82%
+  /// The card color.
   static const Color card = Color(0xFFFFFFFF);
+  /// The hairline color.
   static const Color hairline = Color(0x1A1C1917); // ink 10%
+  /// The danger color.
   static const Color danger = Color(0xFFB42318);
 }
 
@@ -60,13 +80,22 @@ class AppTheme {
       colorScheme: scheme,
       scaffoldBackgroundColor: ParallelPalette.paper,
     );
-    final textTheme = GoogleFonts.spaceGroteskTextTheme(base.textTheme).copyWith(
+    // google_fonts still builds on the legacy material library, so the
+    // TextTheme it returns is a different type from material_ui's.
+    // Map its styles one by one (TextStyle itself is shared) instead
+    // of passing a TextTheme across the boundary.
+    final gfTheme = GoogleFonts.spaceGroteskTextTheme();
+    final textTheme = TextTheme(
+      displayLarge: gfTheme.displayLarge,
+      displayMedium: gfTheme.displayMedium,
       displaySmall: GoogleFonts.spaceGrotesk(
         fontSize: 32,
         fontWeight: FontWeight.w800,
         color: ParallelPalette.ink,
         height: 1.1,
       ),
+      headlineLarge: gfTheme.headlineLarge,
+      headlineMedium: gfTheme.headlineMedium,
       headlineSmall: GoogleFonts.spaceGrotesk(
         fontSize: 26,
         fontWeight: FontWeight.w700,
@@ -83,6 +112,7 @@ class AppTheme {
         fontWeight: FontWeight.w600,
         color: ParallelPalette.ink,
       ),
+      titleSmall: gfTheme.titleSmall,
       bodyLarge: GoogleFonts.spaceGrotesk(
         fontSize: 16,
         color: ParallelPalette.ink,
@@ -100,6 +130,8 @@ class AppTheme {
         fontWeight: FontWeight.w600,
         color: Colors.white,
       ),
+      labelMedium: gfTheme.labelMedium,
+      labelSmall: gfTheme.labelSmall,
     );
     return base.copyWith(
       textTheme: textTheme,

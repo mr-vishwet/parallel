@@ -27,6 +27,7 @@ class DemoData {
     return base.isAfter(now) ? now : base;
   }
 
+  /// The Harbour Light scene titles.
   static const List<String> harbourScenes = [
     'Harbour dawn',
     'The boathouse',
@@ -483,18 +484,18 @@ class DemoData {
         at: demoTime(daysAgo: 0, hour: 9, minute: 41),
       ),
       ActivityEvent(
-        id: 'ev-fork-exp',
-        kind: 'branch',
-        text: 'Mara forked experimental from m7',
-        ref: 'e1 · 3 days ago',
-        at: now.subtract(const Duration(days: 3)),
-      ),
-      ActivityEvent(
         id: 'ev-m7',
         kind: 'snapshot',
         text: 'Dev put the storm tape back in scene 5',
         ref: 'm7 · Yesterday 11:20',
         at: demoTime(daysAgo: 1, hour: 11, minute: 20),
+      ),
+      ActivityEvent(
+        id: 'ev-fork-exp',
+        kind: 'branch',
+        text: 'Mara forked experimental from m7',
+        ref: 'e1 · 3 days ago',
+        at: now.subtract(const Duration(days: 3)),
       ),
       ActivityEvent(
         id: 'ev-fork-min',

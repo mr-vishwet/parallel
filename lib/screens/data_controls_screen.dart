@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../core/routes.dart';
 import '../core/theme.dart';
@@ -10,6 +10,7 @@ import 'screen_helpers.dart';
 /// 30 — Data controls: sign out, export everything, or delete. Your
 /// copies, your call.
 class DataControlsScreen extends StatefulWidget {
+  /// Creates a [DataControlsScreen].
   const DataControlsScreen({super.key});
 
   @override
@@ -49,11 +50,11 @@ class _DataControlsScreenState extends State<DataControlsScreen> {
               ),
             ),
             const SizedBox(height: 16),
-            Card(
+            const Card(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(16, 6, 16, 6),
+                padding: EdgeInsets.fromLTRB(16, 6, 16, 6),
                 child: Column(
-                  children: const [
+                  children: [
                     _ControlRow(
                       icon: Icons.logout,
                       title: 'Sign out',

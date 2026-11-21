@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../core/format.dart';
 import '../core/routes.dart';
@@ -11,8 +11,10 @@ import 'screen_helpers.dart';
 
 /// 06 — New branch: name it, pick the snapshot to fork from.
 class NewBranchScreen extends StatefulWidget {
+  /// Creates a [NewBranchScreen].
   const NewBranchScreen({this.forkFromSnapshotId, super.key});
 
+  /// The fork from snapshot id.
   final String? forkFromSnapshotId;
 
   @override

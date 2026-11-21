@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../core/constants.dart';
 import '../core/routes.dart';
@@ -14,6 +14,7 @@ import 'app_logo.dart';
 /// 2 History, 3 Account. Deep screens pass [tab] -1 (no tab selected).
 /// Auth screens pass [showNav] false.
 class AdaptiveScaffold extends StatelessWidget {
+  /// Creates an [AdaptiveScaffold].
   const AdaptiveScaffold({
     required this.title,
     required this.body,
@@ -25,12 +26,19 @@ class AdaptiveScaffold extends StatelessWidget {
     super.key,
   });
 
+  /// The title.
   final String title;
+  /// The subtitle.
   final String? subtitle;
+  /// The body.
   final Widget body;
+  /// The selected tab index (-1 for no tab).
   final int tab;
+  /// The actions.
   final List<Widget>? actions;
+  /// The floating action button.
   final Widget? floatingActionButton;
+  /// Whether to show the navigation.
   final bool showNav;
 
   @override
@@ -460,9 +468,12 @@ class _DesktopHeader extends StatelessWidget {
 
 /// Shared page padding + scroll for screen bodies.
 class ScreenBody extends StatelessWidget {
+  /// Creates a [ScreenBody].
   const ScreenBody({required this.child, this.padding = 20, super.key});
 
+  /// The child.
   final Widget child;
+  /// The padding.
   final double padding;
 
   @override
@@ -476,8 +487,10 @@ class ScreenBody extends StatelessWidget {
 
 /// A kicker line (small caps label above a heading), as in the V7 screens.
 class Kicker extends StatelessWidget {
+  /// Creates a [Kicker].
   const Kicker(this.text, {super.key});
 
+  /// The text.
   final String text;
 
   @override

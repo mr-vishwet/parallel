@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../core/format.dart';
 import '../core/routes.dart';
@@ -12,13 +12,16 @@ import 'screen_helpers.dart';
 /// 08 — One snapshot: the message, the author, the time, and exactly what
 /// changed.
 class SnapshotDetailScreen extends StatelessWidget {
+  /// Creates a [SnapshotDetailScreen].
   const SnapshotDetailScreen({
     required this.branchId,
     required this.snapshotId,
     super.key,
   });
 
+  /// The branch id.
   final String branchId;
+  /// The snapshot id.
   final String snapshotId;
 
   @override
@@ -143,9 +146,9 @@ class SnapshotDetailScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-            Card(
+            const Card(
               color: ParallelPalette.paper2,
-              child: const Padding(
+              child: Padding(
                 padding: EdgeInsets.all(16),
                 child: Row(
                   children: [

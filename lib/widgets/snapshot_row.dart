@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../core/format.dart';
 import '../core/theme.dart';
@@ -7,6 +7,7 @@ import '../engine/models.dart';
 /// One snapshot in a list: id dot, message, author · time, chevron.
 /// The newest snapshot on a branch renders in the branch colour.
 class SnapshotRow extends StatelessWidget {
+  /// Creates a [SnapshotRow].
   const SnapshotRow({
     required this.snapshot,
     required this.color,
@@ -15,9 +16,13 @@ class SnapshotRow extends StatelessWidget {
     super.key,
   });
 
+  /// The snapshot.
   final Snapshot snapshot;
+  /// The color color.
   final Color color;
+  /// Whether this is the latest snapshot.
   final bool isLatest;
+  /// Called when tapped.
   final VoidCallback? onTap;
 
   @override

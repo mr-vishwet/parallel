@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../core/routes.dart';
 import '../core/theme.dart';
@@ -10,8 +10,10 @@ import '../widgets/adaptive_shell.dart';
 /// 17 — Timeline: one row per scene; the mark shows which branch last
 /// changed it (computed from real snapshot history).
 class TimelineScreen extends StatelessWidget {
+  /// Creates a [TimelineScreen].
   const TimelineScreen({this.highlightScene, super.key});
 
+  /// The highlight scene.
   final int? highlightScene;
 
   @override

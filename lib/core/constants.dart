@@ -9,17 +9,24 @@ library;
 
 /// App identity.
 class AppInfo {
+  /// The name.
   static const String name = 'PARALLEL';
+  /// The tagline.
   static const String tagline = 'Git for creative work';
+  /// The version.
   static const String version = '0.1.0';
+  /// The build label.
   static const String buildLabel = 'v0.1 build — Build Specification';
 }
 
 /// SharedPreferences keys. One key per document; the workspace is a single
 /// JSON document (local-first, no backend in v0.1).
 class StoreKeys {
+  /// The SharedPreferences key for the workspace document.
   static const String workspace = 'parallel.workspace.v1';
+  /// The SharedPreferences key for the settings document.
   static const String settings = 'parallel.settings.v1';
+  /// The SharedPreferences key for the auth document.
   static const String auth = 'parallel.auth.v1';
 }
 
@@ -45,6 +52,7 @@ class BranchPalette {
     0xFF67E8F9, // cyan
   ];
 
+  /// The fallback branch color (cut-red).
   static const int fallback = 0xFFB03220;
 }
 
@@ -56,6 +64,7 @@ class DemoFigures {
 
   /// Demo authors.
   static const String authorMara = 'Mara';
+  /// The demo author Dev.
   static const String authorDev = 'Dev';
 }
 

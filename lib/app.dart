@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import 'core/routes.dart';
 import 'core/theme.dart';
@@ -41,6 +41,7 @@ import 'widgets/app_logo.dart';
 /// otherwise (see [_StartupGate]). Phase 1 uses the single V7 light
 /// theme; the dual-theme system is phase 2.
 class ParallelApp extends StatefulWidget {
+  /// Creates a [ParallelApp].
   const ParallelApp({super.key});
 
   @override

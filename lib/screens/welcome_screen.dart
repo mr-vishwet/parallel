@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../core/routes.dart';
 import '../core/theme.dart';
@@ -10,6 +10,7 @@ import '../widgets/branch_chip.dart';
 /// 21 — Welcome: browse the demo as a guest, or sign in to branch your
 /// own work.
 class WelcomeScreen extends StatelessWidget {
+  /// Creates a [WelcomeScreen].
   const WelcomeScreen({super.key});
 
   @override

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../core/routes.dart';
 import '../core/theme.dart';
@@ -12,6 +12,7 @@ import 'screen_helpers.dart';
 /// 10 — One change up close: the two versions side by side, why it
 /// matters, and the conflict flag when the change conflicts.
 class ChangeDetailScreen extends StatelessWidget {
+  /// Creates a [ChangeDetailScreen].
   const ChangeDetailScreen({
     required this.changeId,
     required this.sourceId,
@@ -19,8 +20,11 @@ class ChangeDetailScreen extends StatelessWidget {
     super.key,
   });
 
+  /// The change id.
   final String changeId;
+  /// The source id.
   final String sourceId;
+  /// The target id.
   final String targetId;
 
   @override

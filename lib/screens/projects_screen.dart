@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../core/format.dart';
 import '../core/routes.dart';
@@ -13,6 +13,7 @@ import 'screen_helpers.dart';
 /// 01 — Projects. The open project, the other projects, the merge in
 /// review, and a way to start a new project.
 class ProjectsScreen extends StatelessWidget {
+  /// Creates a [ProjectsScreen].
   const ProjectsScreen({super.key});
 
   @override
@@ -123,7 +124,7 @@ class ProjectsScreen extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             DropdownButtonFormField<String>(
-              value: kind,
+              initialValue: kind,
               decoration: const InputDecoration(labelText: 'Kind'),
               items: kinds
                   .map((k) =>

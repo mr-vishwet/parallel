@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../core/routes.dart';
 import '../core/theme.dart';
@@ -9,8 +9,10 @@ import '../widgets/snapshot_row.dart';
 
 /// 07 — Snapshots on a branch, newest first. History only grows.
 class SnapshotsScreen extends StatefulWidget {
+  /// Creates a [SnapshotsScreen].
   const SnapshotsScreen({this.branchId = 'main', super.key});
 
+  /// The branch id.
   final String branchId;
 
   @override

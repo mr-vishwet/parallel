@@ -24,15 +24,23 @@ void main() {
       expect(diff.changes.first.title, 'Opening shot');
     });
 
-    test('exactly one conflict: the opening shot', () {
+    test('two conflicts: the opening shot and the voiceover', () {
       final diff = BranchEngine.diff(
         source: harbour.branchById('cinematic')!,
         target: harbour.branchById('main')!,
       );
-      expect(diff.conflicts.map((c) => c.id), ['c1-0']);
+      // c1-0 is the seeded conflict (the opening shot). c4-1 is detected
+      // by the engine: main cut the scene-4 voiceover in m6 while
+      // cinematic kept and trimmed it in c4 — the same scene, the same
+      // kind, after the fork. Both are real conflicts.
+      expect(diff.conflicts.map((c) => c.id), ['c1-0', 'c4-1']);
       expect(
         diff.conflicts.first.conflictNote,
         contains('Dev reframed the boathouse'),
+      );
+      expect(
+        diff.conflicts.last.conflictNote,
+        contains('voiceover'),
       );
     });
 

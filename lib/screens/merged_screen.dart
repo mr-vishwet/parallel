@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../core/format.dart';
 import '../core/routes.dart';
@@ -9,6 +9,7 @@ import '../widgets/adaptive_shell.dart';
 /// 16 — Merged: the merge snapshot landed. The left-behind card is as big
 /// as the success card — restraint is a feature.
 class MergedScreen extends StatelessWidget {
+  /// Creates a [MergedScreen].
   const MergedScreen({
     required this.branchId,
     required this.snapshotId,
@@ -16,8 +17,11 @@ class MergedScreen extends StatelessWidget {
     super.key,
   });
 
+  /// The branch id.
   final String branchId;
+  /// The snapshot id.
   final String snapshotId;
+  /// The source id.
   final String sourceId;
 
   @override

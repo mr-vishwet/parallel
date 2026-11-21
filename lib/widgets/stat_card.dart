@@ -1,10 +1,11 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../core/theme.dart';
 
 /// A small stat: label above, big figure, sub-label below. Matches the V7
 /// stat rows (Branches 7 · 4 on Harbour Light).
 class StatCard extends StatelessWidget {
+  /// Creates a [StatCard].
   const StatCard({
     required this.label,
     required this.figure,
@@ -12,8 +13,11 @@ class StatCard extends StatelessWidget {
     super.key,
   });
 
+  /// The label above the figure.
   final String label;
+  /// The big figure.
   final String figure;
+  /// The sub-label below the figure.
   final String sub;
 
   @override
@@ -58,8 +62,10 @@ class StatCard extends StatelessWidget {
 /// A row of [StatCard]s with dividers, as on the projects and branch
 /// screens.
 class StatRow extends StatelessWidget {
+  /// Creates a [StatRow].
   const StatRow({required this.stats, super.key});
 
+  /// The stats.
   final List<StatCard> stats;
 
   @override

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../core/routes.dart';
 import '../core/theme.dart';
@@ -6,6 +6,7 @@ import '../widgets/adaptive_shell.dart';
 
 /// 26 — Upgrade prompt: branching needs an account. The demo stays open.
 class UpgradeScreen extends StatelessWidget {
+  /// Creates an [UpgradeScreen].
   const UpgradeScreen({required this.action, super.key});
 
   /// What the guest was trying to do, e.g. 'branch this project'.
@@ -42,12 +43,12 @@ class UpgradeScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            Card(
+            const Card(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(16, 12, 16, 6),
+                padding: EdgeInsets.fromLTRB(16, 12, 16, 6),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
+                  children: [
                     Text(
                       'What signing in adds',
                       style: TextStyle(

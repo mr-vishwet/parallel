@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../core/routes.dart';
 import '../core/theme.dart';
@@ -7,6 +7,7 @@ import '../widgets/adaptive_shell.dart';
 
 /// 22 — Guest mode is a viewing room: look at everything, change nothing.
 class GuestScreen extends StatelessWidget {
+  /// Creates a [GuestScreen].
   const GuestScreen({super.key});
 
   @override
@@ -42,11 +43,11 @@ class GuestScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            Card(
+            const Card(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(16, 6, 16, 6),
+                padding: EdgeInsets.fromLTRB(16, 6, 16, 6),
                 child: Column(
-                  children: const [
+                  children: [
                     _CapabilityRow(
                       icon: Icons.visibility_outlined,
                       title: 'Look around the demo',
@@ -79,9 +80,9 @@ class GuestScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-            Card(
+            const Card(
               color: ParallelPalette.paper2,
-              child: const Padding(
+              child: Padding(
                 padding: EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../core/format.dart';
 import '../core/routes.dart';
@@ -15,8 +15,10 @@ import 'screen_helpers.dart';
 /// Parameterized by branch id; the same screen serves cinematic, minimal,
 /// experimental, main, and user-created branches.
 class BranchDetailScreen extends StatelessWidget {
+  /// Creates a [BranchDetailScreen].
   const BranchDetailScreen({required this.branchId, super.key});
 
+  /// The branch id.
   final String branchId;
 
   @override
@@ -260,7 +262,7 @@ class BranchDetailScreen extends StatelessWidget {
               const SizedBox(height: 12),
               if (project != null && project.scenes.isNotEmpty)
                 DropdownButtonFormField<int>(
-                  value: scene,
+                  initialValue: scene,
                   decoration: const InputDecoration(labelText: 'Scene'),
                   items: project.scenes
                       .map((s) => DropdownMenuItem(

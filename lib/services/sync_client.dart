@@ -10,21 +10,26 @@ import 'package:http/http.dart' as http;
 /// stub runs locally with `dart server/sync_stub.dart`. Auth is a bearer
 /// token the stub accepts as-is; real auth is a phase-2 item.
 class SyncException implements Exception {
+  /// Creates a [SyncException].
   const SyncException(this.message);
 
+  /// The message.
   final String message;
 
   @override
   String toString() => message;
 }
 
+/// Client for the PARALLEL sync sketch server.
 class SyncClient {
+  /// Creates a [SyncClient].
   SyncClient({required String baseUrl, this.token = 'local-demo-token'})
       : _base = baseUrl.endsWith('/')
             ? baseUrl.substring(0, baseUrl.length - 1)
             : baseUrl;
 
   final String _base;
+  /// The bearer token sent with sync requests.
   final String token;
 
   Map<String, String> get _headers => {

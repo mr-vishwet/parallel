@@ -14,13 +14,18 @@ library;
 
 /// One scene (film) or frame group (photo series) in a project.
 class Scene {
+  /// Creates a [Scene].
   const Scene({required this.number, required this.title});
 
+  /// The number.
   final int number;
+  /// The title.
   final String title;
 
+  /// Converts this to JSON.
   Map<String, dynamic> toJson() => {'number': number, 'title': title};
 
+  /// Creates a [Scene] from JSON.
   factory Scene.fromJson(Map<String, dynamic> json) => Scene(
         number: json['number'] as int,
         title: json['title'] as String,
@@ -34,6 +39,7 @@ class Scene {
 /// detection); [kind] groups changes by nature ('shot', 'order', 'grade',
 /// 'runtime', 'voiceover', 'sound', 'edit', 'pacing', 'credits').
 class Change {
+  /// Creates a [Change].
   const Change({
     required this.id,
     required this.title,
@@ -47,12 +53,19 @@ class Change {
     this.selectedByDefault = true,
   });
 
+  /// The id.
   final String id;
+  /// The title.
   final String title;
+  /// What changed, in human language.
   final String detail;
+  /// The meta line shown under the detail.
   final String meta;
+  /// The scenes this change touches.
   final List<int> scenes;
+  /// The kind of change.
   final String kind;
+  /// How the runtime moves when this change lands, in seconds.
   final int runtimeDeltaSeconds;
 
   /// True when this change conflicts with the merge target. Seeded from
@@ -60,6 +73,7 @@ class Change {
   /// after c1) or detected by [BranchEngine] when both sides changed the
   /// same scene in the same way after the fork.
   final bool conflict;
+  /// Why this change conflicts, if it does.
   final String? conflictNote;
 
   /// Whether the merge review ticks this change by default. The demo's
@@ -67,6 +81,7 @@ class Change {
   /// V7 screens show; user-created changes default to ticked.
   final bool selectedByDefault;
 
+  /// Returns a copy of this with the given values replaced.
   Change copyWith({bool? conflict, String? conflictNote}) => Change(
         id: id,
         title: title,
@@ -80,6 +95,7 @@ class Change {
         selectedByDefault: selectedByDefault,
       );
 
+  /// Converts this to JSON.
   Map<String, dynamic> toJson() => {
         'id': id,
         'title': title,
@@ -93,6 +109,7 @@ class Change {
         'selectedByDefault': selectedByDefault,
       };
 
+  /// Creates a [Change] from JSON.
   factory Change.fromJson(Map<String, dynamic> json) => Change(
         id: json['id'] as String,
         title: json['title'] as String,
@@ -115,6 +132,7 @@ class Change {
 /// branch; [restores] names the snapshot a restore brings back; [mergeOf]
 /// names the branch a merge snapshot merged from.
 class Snapshot {
+  /// Creates a [Snapshot].
   const Snapshot({
     required this.id,
     required this.message,
@@ -128,14 +146,23 @@ class Snapshot {
     this.restoreLabel,
   });
 
+  /// The id.
   final String id;
+  /// The message.
   final String message;
+  /// The author.
   final String author;
+  /// When this snapshot was taken.
   final DateTime createdAt;
+  /// The branch id.
   final String branchId;
+  /// The changes.
   final List<Change> changes;
+  /// The parent id.
   final String? parentId;
+  /// The snapshot id this restore brings back.
   final String? restores;
+  /// The branch id this merge merged from.
   final String? mergeOf;
 
   /// Human phrase used when this snapshot is restored, e.g.
@@ -143,12 +170,15 @@ class Snapshot {
   /// message when absent.
   final String? restoreLabel;
 
+  /// Whether this snapshot is a merge.
   bool get isMerge => mergeOf != null;
+  /// Whether this snapshot is a restore.
   bool get isRestore => restores != null;
 
   /// What a restore of this snapshot would bring back, in plain words.
   String get restorePhrase => restoreLabel ?? message.toLowerCase();
 
+  /// Converts this to JSON.
   Map<String, dynamic> toJson() => {
         'id': id,
         'message': message,
@@ -162,6 +192,7 @@ class Snapshot {
         'restoreLabel': restoreLabel,
       };
 
+  /// Creates a [Snapshot] from JSON.
   factory Snapshot.fromJson(Map<String, dynamic> json) => Snapshot(
         id: json['id'] as String,
         message: json['message'] as String,
@@ -180,6 +211,7 @@ class Snapshot {
 
 /// One timeline of a project. Snapshots are stored newest-first.
 class Branch {
+  /// Creates a [Branch].
   const Branch({
     required this.id,
     required this.name,
@@ -191,8 +223,11 @@ class Branch {
     this.snapshots = const [],
   });
 
+  /// The id.
   final String id;
+  /// The name.
   final String name;
+  /// The tagline.
   final String tagline;
 
   /// ARGB glow colour for the branch (see [BranchPalette]).
@@ -211,10 +246,13 @@ class Branch {
   /// branches with appended snapshots.
   final List<Snapshot> snapshots;
 
+  /// The newest snapshot, or null if there are none.
   Snapshot? get latest => snapshots.isEmpty ? null : snapshots.first;
 
+  /// The number of snapshots.
   int get snapshotCount => snapshots.length;
 
+  /// Returns a copy of this with the given values replaced.
   Branch copyWith({
     String? tagline,
     int? runtimeSeconds,
@@ -231,6 +269,7 @@ class Branch {
         snapshots: snapshots ?? this.snapshots,
       );
 
+  /// Converts this to JSON.
   Map<String, dynamic> toJson() => {
         'id': id,
         'name': name,
@@ -242,6 +281,7 @@ class Branch {
         'snapshots': snapshots.map((s) => s.toJson()).toList(),
       };
 
+  /// Creates a [Branch] from JSON.
   factory Branch.fromJson(Map<String, dynamic> json) => Branch(
         id: json['id'] as String,
         name: json['name'] as String,
@@ -258,6 +298,7 @@ class Branch {
 
 /// A creative project: scenes plus the branches that explore them.
 class Project {
+  /// Creates a [Project].
   const Project({
     required this.id,
     required this.name,
@@ -270,7 +311,9 @@ class Project {
     this.mergeInReviewSource,
   });
 
+  /// The id.
   final String id;
+  /// The name.
   final String name;
 
   /// 'Short film', 'Brand film', 'Photo series', ...
@@ -278,17 +321,21 @@ class Project {
 
   /// One-line summary, e.g. '3:48 · 14 scenes'.
   final String subtitle;
+  /// The scenes.
   final List<Scene> scenes;
+  /// The branches.
   final List<Branch> branches;
 
   /// Demo projects belong to the demo, not to the user. Guests view them
   /// read-only; signed-in users fork them into their own account.
   final bool isDemo;
+  /// Whether this project is archived.
   final bool archived;
 
   /// Branch id with a merge into main currently in review (null when none).
   final String? mergeInReviewSource;
 
+  /// Returns the branch with the given id, or null if there is none.
   Branch? branchById(String id) {
     for (final b in branches) {
       if (b.id == id) return b;
@@ -296,11 +343,14 @@ class Project {
     return null;
   }
 
+  /// The main branch.
   Branch get mainBranch => branchById('main') ?? branches.first;
 
+  /// The number of snapshots across all branches.
   int get snapshotCount =>
       branches.fold(0, (sum, b) => sum + b.snapshotCount);
 
+  /// Returns a copy of this with the given values replaced.
   Project copyWith({
     String? subtitle,
     List<Branch>? branches,
@@ -322,6 +372,7 @@ class Project {
             : (mergeInReviewSource ?? this.mergeInReviewSource),
       );
 
+  /// Converts this to JSON.
   Map<String, dynamic> toJson() => {
         'id': id,
         'name': name,
@@ -334,6 +385,7 @@ class Project {
         'mergeInReviewSource': mergeInReviewSource,
       };
 
+  /// Creates a [Project] from JSON.
   factory Project.fromJson(Map<String, dynamic> json) => Project(
         id: json['id'] as String,
         name: json['name'] as String,
@@ -354,6 +406,7 @@ class Project {
 /// One activity-feed entry: every branch, merge and restore, with the
 /// person attached.
 class ActivityEvent {
+  /// Creates an [ActivityEvent].
   const ActivityEvent({
     required this.id,
     required this.kind,
@@ -362,16 +415,20 @@ class ActivityEvent {
     required this.at,
   });
 
+  /// The id.
   final String id;
 
   /// 'branch' | 'merge' | 'restore' | 'snapshot' | 'project'.
   final String kind;
+  /// The feed text.
   final String text;
 
   /// Short ref, e.g. 'm11 · Today 10:04'.
   final String ref;
+  /// When this happened.
   final DateTime at;
 
+  /// Converts this to JSON.
   Map<String, dynamic> toJson() => {
         'id': id,
         'kind': kind,
@@ -380,6 +437,7 @@ class ActivityEvent {
         'at': at.toIso8601String(),
       };
 
+  /// Creates an [ActivityEvent] from JSON.
   factory ActivityEvent.fromJson(Map<String, dynamic> json) => ActivityEvent(
         id: json['id'] as String,
         kind: json['kind'] as String,
@@ -391,6 +449,7 @@ class ActivityEvent {
 
 /// App-level settings: connections, review link, sync stub URL.
 class AppSettings {
+  /// Creates an [AppSettings].
   const AppSettings({
     this.githubConnected = false,
     this.frameioConnected = false,
@@ -399,14 +458,19 @@ class AppSettings {
     this.syncBaseUrl = '',
   });
 
+  /// Whether GitHub is connected.
   final bool githubConnected;
+  /// Whether Frame.io is connected.
   final bool frameioConnected;
+  /// Whether a local folder is connected.
   final bool localFolderConnected;
+  /// Whether the review link is on.
   final bool reviewLinkOn;
 
   /// Base URL of the sync sketch server (empty = sync off). See server/.
   final String syncBaseUrl;
 
+  /// Returns a copy of this with the given values replaced.
   AppSettings copyWith({
     bool? githubConnected,
     bool? frameioConnected,
@@ -423,6 +487,7 @@ class AppSettings {
         syncBaseUrl: syncBaseUrl ?? this.syncBaseUrl,
       );
 
+  /// Converts this to JSON.
   Map<String, dynamic> toJson() => {
         'githubConnected': githubConnected,
         'frameioConnected': frameioConnected,
@@ -431,6 +496,7 @@ class AppSettings {
         'syncBaseUrl': syncBaseUrl,
       };
 
+  /// Creates an [AppSettings] from JSON.
   factory AppSettings.fromJson(Map<String, dynamic> json) => AppSettings(
         githubConnected: json['githubConnected'] as bool? ?? false,
         frameioConnected: json['frameioConnected'] as bool? ?? false,
@@ -442,18 +508,22 @@ class AppSettings {
 
 /// The whole local workspace: projects, activity, and which project is open.
 class Workspace {
+  /// Creates a [Workspace].
   const Workspace({
     this.projects = const [],
     this.activity = const [],
     this.openProjectId = 'harbour-light',
   });
 
+  /// The projects.
   final List<Project> projects;
 
   /// Newest first.
   final List<ActivityEvent> activity;
+  /// The open project id.
   final String openProjectId;
 
+  /// The open project.
   Project? get openProject {
     for (final p in projects) {
       if (p.id == openProjectId) return p;
@@ -461,6 +531,7 @@ class Workspace {
     return projects.isEmpty ? null : projects.first;
   }
 
+  /// Returns the project with the given id, or null if there is none.
   Project? projectById(String id) {
     for (final p in projects) {
       if (p.id == id) return p;
@@ -468,17 +539,22 @@ class Workspace {
     return null;
   }
 
+  /// The number of branches across all projects.
   int get branchCount => projects.fold(0, (sum, p) => sum + p.branches.length);
 
+  /// The number of snapshots across all projects.
   int get snapshotCount =>
       projects.fold(0, (sum, p) => sum + p.snapshotCount);
 
+  /// The number of merges in the activity feed.
   int get mergeCount =>
       activity.where((e) => e.kind == 'merge').length;
 
+  /// The number of projects with a merge in review.
   int get mergesInReview =>
       projects.where((p) => p.mergeInReviewSource != null).length;
 
+  /// Returns a copy of this with the given values replaced.
   Workspace copyWith({
     List<Project>? projects,
     List<ActivityEvent>? activity,
@@ -490,12 +566,14 @@ class Workspace {
         openProjectId: openProjectId ?? this.openProjectId,
       );
 
+  /// Converts this to JSON.
   Map<String, dynamic> toJson() => {
         'projects': projects.map((p) => p.toJson()).toList(),
         'activity': activity.map((e) => e.toJson()).toList(),
         'openProjectId': openProjectId,
       };
 
+  /// Creates a [Workspace] from JSON.
   factory Workspace.fromJson(Map<String, dynamic> json) => Workspace(
         projects: (json['projects'] as List<dynamic>? ?? [])
             .map((e) => Project.fromJson(e as Map<String, dynamic>))

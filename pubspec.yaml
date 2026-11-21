@@ -25,6 +25,9 @@ dependencies:
   # Export file location on native platforms.
   path_provider: ^2.1.4
 
+  # Material Design widgets (package:flutter/material.dart is deprecated
+  # since Flutter 3.47; the widgets now live here).
+  material_ui: ^1.11.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

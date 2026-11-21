@@ -26,6 +26,7 @@
 /// conflict resolution, media storage, or anything production-shaped.
 /// See `openapi.yaml` for the full contract and `README.md` for the
 /// design notes.
+library;
 import 'dart:convert';
 import 'dart:io';
 

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../core/format.dart';
 import '../core/routes.dart';
@@ -9,13 +9,16 @@ import '../widgets/adaptive_shell.dart';
 /// 13 — Restored: the decision is back, as a new snapshot. Nothing was
 /// rewritten.
 class RestoredScreen extends StatelessWidget {
+  /// Creates a [RestoredScreen].
   const RestoredScreen({
     required this.branchId,
     required this.snapshotId,
     super.key,
   });
 
+  /// The branch id.
   final String branchId;
+  /// The snapshot id.
   final String snapshotId;
 
   @override

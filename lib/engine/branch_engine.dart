@@ -4,6 +4,7 @@ import 'models.dart';
 
 /// The result of diffing [source] against [target].
 class DiffResult {
+  /// Creates a [DiffResult].
   const DiffResult({
     required this.changes,
     required this.conflicts,
@@ -20,18 +21,21 @@ class DiffResult {
   /// The snapshot id the source forked from (null when the source is main).
   final String? forkSnapshotId;
 
+  /// The runtime delta of all changes, in seconds.
   int get runtimeDeltaSeconds =>
       changes.fold(0, (sum, c) => sum + c.runtimeDeltaSeconds);
 }
 
 /// What a restore would do: what returns, what stays changed.
 class RestoreScope {
+  /// Creates a [RestoreScope].
   const RestoreScope({
     required this.snapshot,
     required this.returns,
     required this.staysChanged,
   });
 
+  /// The snapshot.
   final Snapshot snapshot;
 
   /// The changes the restore brings back.
@@ -45,6 +49,7 @@ class RestoreScope {
 /// A merge plan: the picked changes, what stays behind, and whether the
 /// conflicts are resolved. Built by [BranchEngine.planMerge].
 class MergePlan {
+  /// Creates a [MergePlan].
   const MergePlan({
     required this.applied,
     required this.leftBehind,
@@ -52,24 +57,33 @@ class MergePlan {
     required this.runtimeDeltaSeconds,
   });
 
+  /// The changes the merge applies.
   final List<Change> applied;
+  /// The changes the merge leaves behind.
   final List<Change> leftBehind;
+  /// Whether every conflict has a resolution.
   final bool conflictsResolved;
+  /// The runtime delta of the applied changes, in seconds.
   final int runtimeDeltaSeconds;
 
+  /// Whether the plan can land.
   bool get canLand => conflictsResolved && applied.isNotEmpty;
 }
 
 /// One search hit: a snapshot, where it lives, and why it matched.
 class SnapshotHit {
+  /// Creates a [SnapshotHit].
   const SnapshotHit({
     required this.snapshot,
     required this.projectId,
     required this.branchId,
   });
 
+  /// The snapshot.
   final Snapshot snapshot;
+  /// The project id.
   final String projectId;
+  /// The branch id.
   final String branchId;
 }
 

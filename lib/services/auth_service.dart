@@ -11,6 +11,7 @@ import '../core/constants.dart';
 /// verification code is a local demo code (shown on the verify screen,
 /// clearly labelled). The sync sketch (server/) is where real auth lands.
 class Account {
+  /// Creates an [Account].
   const Account({
     required this.name,
     required this.email,
@@ -20,13 +21,20 @@ class Account {
     this.verified = false,
   });
 
+  /// The name.
   final String name;
+  /// The email.
   final String email;
+  /// The SHA-256 hash of the password.
   final String passwordHash;
+  /// The salt for the password hash.
   final String salt;
+  /// When this account was created.
   final DateTime createdAt;
+  /// Whether the account is verified.
   final bool verified;
 
+  /// Returns a copy of this with the given values replaced.
   Account copyWith({bool? verified}) => Account(
         name: name,
         email: email,
@@ -36,6 +44,7 @@ class Account {
         verified: verified ?? this.verified,
       );
 
+  /// Converts this to JSON.
   Map<String, dynamic> toJson() => {
         'name': name,
         'email': email,
@@ -45,6 +54,7 @@ class Account {
         'verified': verified,
       };
 
+  /// Creates an [Account] from JSON.
   factory Account.fromJson(Map<String, dynamic> json) => Account(
         name: json['name'] as String,
         email: json['email'] as String,
@@ -57,20 +67,33 @@ class Account {
 
 /// Session modes: no session yet, browsing the demo as a guest, or signed
 /// in as an account.
-enum SessionMode { none, guest, signedIn }
+enum SessionMode {
+  /// No session yet.
+  none,
+
+  /// Browsing the demo as a guest.
+  guest,
+
+  /// Signed in as an account.
+  signedIn,
+}
 
 /// Local account store + session. Throws [AuthException] with a human
 /// message on every failure path; the UI shows the message as-is.
 class AuthException implements Exception {
+  /// Creates an [AuthException].
   const AuthException(this.message);
 
+  /// The message.
   final String message;
 
   @override
   String toString() => message;
 }
 
+/// Local account store and session.
 class AuthService {
+  /// Creates an [AuthService].
   AuthService({Random? random}) : _random = random ?? Random.secure();
 
   final Random _random;
@@ -87,12 +110,18 @@ class AuthService {
 
   bool _loaded = false;
 
+  /// The signed-in account, if any.
   Account? get currentAccount => _current;
+  /// The session mode.
   SessionMode get mode => _mode;
+  /// Whether a user is signed in.
   bool get signedIn => _mode == SessionMode.signedIn && _current != null;
+  /// Whether the session is a guest session.
   bool get isGuest => _mode == SessionMode.guest;
+  /// The name to show in the UI.
   String get displayName =>
       _current?.name ?? (_mode == SessionMode.guest ? 'Guest' : '');
+  /// The email to show in the UI.
   String get displayEmail => _current?.email ?? '';
 
   /// Loads accounts and the saved session. Safe to call twice.

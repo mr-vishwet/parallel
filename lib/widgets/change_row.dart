@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../core/theme.dart';
 import '../engine/models.dart';
@@ -7,6 +7,7 @@ import '../engine/models.dart';
 /// meta line, and a conflict flag when present. Tapping the row opens the
 /// change detail; tapping the checkbox toggles selection.
 class ChangeRow extends StatelessWidget {
+  /// Creates a [ChangeRow].
   const ChangeRow({
     required this.change,
     this.selected = false,
@@ -16,10 +17,15 @@ class ChangeRow extends StatelessWidget {
     super.key,
   });
 
+  /// The change.
   final Change change;
+  /// Whether the change is selected.
   final bool selected;
+  /// Whether the change can be selected.
   final bool selectable;
+  /// Called when toggled.
   final ValueChanged<bool>? onToggle;
+  /// Called when tapped.
   final VoidCallback? onTap;
 
   @override

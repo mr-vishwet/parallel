@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../core/routes.dart';
 import '../core/theme.dart';
@@ -8,6 +8,7 @@ import 'screen_helpers.dart';
 
 /// 24 — Create an account: name, email, password. Then verify.
 class CreateAccountScreen extends StatefulWidget {
+  /// Creates a [CreateAccountScreen].
   const CreateAccountScreen({super.key});
 
   @override
@@ -119,9 +120,9 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
               ),
             ),
             const SizedBox(height: 20),
-            Card(
+            const Card(
               color: ParallelPalette.paper2,
-              child: const Padding(
+              child: Padding(
                 padding: EdgeInsets.all(16),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,

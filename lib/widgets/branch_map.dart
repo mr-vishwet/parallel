@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../core/theme.dart';
 import '../engine/models.dart';
@@ -6,6 +6,7 @@ import '../engine/models.dart';
 /// The branch map: one glowing rail per branch, a dot per snapshot, the
 /// selected rail lit and the others quiet. Tapping a rail selects it.
 class BranchMap extends StatelessWidget {
+  /// Creates a [BranchMap].
   const BranchMap({
     required this.branches,
     required this.selectedId,
@@ -13,8 +14,11 @@ class BranchMap extends StatelessWidget {
     super.key,
   });
 
+  /// The branches.
   final List<Branch> branches;
+  /// The selected id.
   final String selectedId;
+  /// Called when selected.
   final ValueChanged<String> onSelect;
 
   @override

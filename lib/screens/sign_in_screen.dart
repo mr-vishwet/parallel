@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../core/routes.dart';
 import '../core/theme.dart';
@@ -13,6 +13,7 @@ import 'screen_helpers.dart';
 /// Google are not connected yet — tapping them says so honestly instead
 /// of pretending.
 class SignInScreen extends StatefulWidget {
+  /// Creates a [SignInScreen].
   const SignInScreen({super.key});
 
   @override

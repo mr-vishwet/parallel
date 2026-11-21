@@ -1,12 +1,15 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../core/theme.dart';
 
 /// A glowing dot in a branch's colour.
 class BranchDot extends StatelessWidget {
+  /// Creates a [BranchDot].
   const BranchDot({required this.color, this.size = 10, super.key});
 
+  /// The color color.
   final Color color;
+  /// The size.
   final double size;
 
   @override
@@ -32,6 +35,7 @@ class BranchDot extends StatelessWidget {
 /// A pill chip for a branch name, glowing in the branch colour when
 /// selected. Used on the branch map and the compare picker.
 class BranchChip extends StatelessWidget {
+  /// Creates a [BranchChip].
   const BranchChip({
     required this.name,
     required this.color,
@@ -41,12 +45,16 @@ class BranchChip extends StatelessWidget {
     super.key,
   });
 
+  /// The name.
   final String name;
+  /// The color color.
   final Color color;
+  /// Whether the chip is selected.
   final bool selected;
 
   /// Optional letter badge ('A' / 'B' on the compare screen).
   final String? badge;
+  /// Called when tapped.
   final VoidCallback? onTap;
 
   @override
