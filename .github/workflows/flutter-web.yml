@@ -1,0 +1,66 @@
+# Flutter web -> GitHub Pages (one file, identical for all five app repos)
+#
+# SETUP (once per repo, about 2 minutes, in the GitHub web UI):
+# 1. Repo -> Add file -> Create new file -> path:
+# .github/workflows/flutter-web.yml -> paste this whole file -> Commit.
+# 2. Repo -> Settings -> Pages -> "Build and deployment" -> Source:
+# GitHub Actions.
+# 3. Push any commit, or Actions -> "Flutter web -> Pages" -> Run
+# workflow. The site goes live at:
+# https://mr-vishwet.github.io/<repo>/
+#
+# NOTES
+# - The `test` job (analyze + unit tests) is informational: it never
+# blocks the deploy, so a failing test can't hide the app from you.
+# A compile error still blocks the build; the run log will name it
+# and it gets fixed from there.
+# - The base-href is derived from the repo name, so this file is
+# identical in middle-out, burn-rate-pet, palimpsest, parallel and
+# frame-police.
+# - PLAN: GitHub Pages publishes from a PRIVATE repo only on Pro, Team
+# or Enterprise. On GitHub Free, Pages works only from public repos:
+# burn-rate-pet (public) works on any plan; the other four need Pro
+# or a public site-only repo. Either way the published site itself
+# is public to anyone with the link.
+name: Flutter web -> Pages
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: false
+jobs:
+  test:
+    name: Analyze + test (informational)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+      - run: flutter analyze
+      - run: flutter test
+  deploy:
+    name: Build web + deploy to Pages
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+      - run: flutter pub get
+      - run: flutter build web --release --base-href "/${{ github.event.repository.name }}/"
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/web
+      - id: deployment
+        uses: actions/deploy-pages@v4
