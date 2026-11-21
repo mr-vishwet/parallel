@@ -36,10 +36,10 @@ import 'widgets/app_logo.dart';
 /// PARALLEL app shell.
 ///
 /// One [AppController] owns the workspace, auth, settings and the live
-/// merge review; [AppScope] exposes it to every screen. The initial route
-/// is /projects when a session exists (signed in or guest) and /welcome
-/// otherwise. Phase 1 uses the single V7 light theme; the dual-theme
-/// system is phase 2.
+/// merge review; [AppScope] exposes it to every screen. The first screen
+/// is Projects when a session exists (signed in or guest) and Welcome
+/// otherwise (see [_StartupGate]). Phase 1 uses the single V7 light
+/// theme; the dual-theme system is phase 2.
 class ParallelApp extends StatefulWidget {
   const ParallelApp({super.key});
 
@@ -64,38 +64,24 @@ class _ParallelAppState extends State<ParallelApp> {
 
   @override
   Widget build(BuildContext context) {
+    // ONE MaterialApp for the app's whole life. Swapping between two
+    // MaterialApps (a splash one with `home`, a main one without) crashes
+    // in release: the Navigator keeps the "/" route, whose builder is the
+    // framework closure `(context) => widget.home!` — after the swap
+    // `home` is null and that closure throws "Null check operator used on
+    // a null value" when the route rebuilds (deployed main.dart.js
+    // aDt.$1, line 76386). The loading gate lives INSIDE `home` instead,
+    // so `home` is never null. (The swap was doubly broken: `initialRoute`
+    // is only read when the Navigator is created, so the swapped-in
+    // MaterialApp's initialRoute was silently ignored and the app would
+    // have stayed on the splash even without the crash.)
     return AppScope(
       controller: _controller,
-      child: AnimatedBuilder(
-        animation: _controller,
-        builder: (context, _) {
-          if (_controller.loading) {
-            return MaterialApp(
-              title: 'PARALLEL',
-              theme: AppTheme.light,
-              home: Scaffold(
-                body: Center(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      AppLogo.icon(size: 72),
-                      const SizedBox(height: 16),
-                      const CircularProgressIndicator(),
-                    ],
-                  ),
-                ),
-              ),
-            );
-          }
-          return MaterialApp(
-            title: 'PARALLEL',
-            theme: AppTheme.light,
-            initialRoute: _controller.hasSession
-                ? Routes.projects
-                : Routes.welcome,
-            onGenerateRoute: _onGenerateRoute,
-          );
-        },
+      child: MaterialApp(
+        title: 'PARALLEL',
+        theme: AppTheme.light,
+        home: const _StartupGate(),
+        onGenerateRoute: _onGenerateRoute,
       ),
     );
   }
@@ -209,6 +195,49 @@ class _ParallelAppState extends State<ParallelApp> {
     return MaterialPageRoute<void>(
       builder: (_) => screen,
       settings: settings,
+    );
+  }
+}
+
+/// The "/" route's content: the splash while the store loads, then the
+/// first screen — Projects for a returning session, Welcome for first
+/// launch. Rebuilds on the controller (via [AnimatedBuilder]) so the
+/// switch happens the moment `init()` completes.
+class _StartupGate extends StatelessWidget {
+  const _StartupGate();
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = AppScope.of(context);
+    return AnimatedBuilder(
+      animation: controller,
+      builder: (context, _) {
+        if (controller.loading) return const _SplashScreen();
+        return controller.hasSession
+            ? const ProjectsScreen()
+            : const WelcomeScreen();
+      },
+    );
+  }
+}
+
+/// Splash shown while the store loads (local SharedPreferences — fast).
+class _SplashScreen extends StatelessWidget {
+  const _SplashScreen();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            AppLogo.icon(size: 72),
+            const SizedBox(height: 16),
+            const CircularProgressIndicator(),
+          ],
+        ),
+      ),
     );
   }
 }
