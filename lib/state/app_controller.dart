@@ -138,8 +138,9 @@ class AppController extends ChangeNotifier {
 
   // ------------------------------------------------------------ projects
 
-  /// Opens a project (and persists the choice).
-  Future<void> openProject(String projectId) async {
+  /// Opens a project by id (and persists the choice). Named
+  /// [openProjectById] to avoid clashing with the [openProject] getter.
+  Future<void> openProjectById(String projectId) async {
     workspace = workspace.copyWith(openProjectId: projectId);
     await _saveWorkspace();
     notifyListeners();
@@ -263,8 +264,8 @@ class AppController extends ChangeNotifier {
     required String forkFromId,
   }) async {
     _requireEdit();
-    final project = openProject;
-    if (project == null) throw StateError('No project is open.');
+    final Project project =
+        openProject ?? (throw StateError('No project is open.'));
     final branch = BranchEngine.createBranch(
       project: project,
       name: name,

@@ -74,7 +74,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                   const Divider(),
                   _Row(
-                    icon: Icons.hard_drive_outlined,
+                    icon: Icons.hard_drive,
                     title: 'Storage',
                     sub: '${DemoFigures.storageOnDevice} on this device · '
                         'originals kept · demo figure',

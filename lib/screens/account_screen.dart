@@ -144,7 +144,7 @@ class AccountScreen extends StatelessWidget {
                   ),
                   const Divider(),
                   _Row(
-                    icon: Icons.hard_drive_outlined,
+                    icon: Icons.hard_drive,
                     title: 'Storage',
                     sub: '${DemoFigures.storageOnDevice} on this device · '
                         'demo figure',

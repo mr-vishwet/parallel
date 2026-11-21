@@ -68,7 +68,7 @@ class ProjectsScreen extends StatelessWidget {
                 project: project,
                 isOpen: project.id == open?.id,
                 onOpen: () async {
-                  await controller.openProject(project.id);
+                  await controller.openProjectById(project.id);
                   if (context.mounted) {
                     Navigator.pushNamed(context, Routes.branchMap);
                   }
@@ -257,7 +257,7 @@ class _ProjectCard extends StatelessWidget {
                       name: branch.name,
                       color: Color(branch.color),
                       onTap: () async {
-                        await controller.openProject(project.id);
+                        await controller.openProjectById(project.id);
                         if (context.mounted) {
                           Navigator.pushNamed(
                             context,
