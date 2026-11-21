@@ -1,0 +1,39 @@
+name: parallel
+description: PARALLEL — Git for creative work. Branch a project, compare visually, merge only the changes you pick, restore any decision. Local-first; v0.1 build.
+publish_to: 'none'
+version: 0.1.0+1
+
+environment:
+  sdk: '>=3.6.0 <4.0.0'
+  flutter: '>=3.27.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  # Space Grotesk + JetBrains Mono, matching the V7 design.
+  google_fonts: ^6.2.1
+  # Logo assets are SVG (icon + app icon render in-app; the horizontal and
+  # stacked lockups carry <text> elements flutter_svg cannot render, so the
+  # wordmark is composed as a Flutter Text widget next to the icon).
+  flutter_svg: ^2.0.10+1
+  # Local-first persistence: the whole workspace is one JSON document.
+  shared_preferences: ^2.3.3
+  # SHA-256 password hashing for the local-only v0.1 account store.
+  crypto: ^3.0.6
+  # Sync-sketch client (talks to server/sync_stub.dart when configured).
+  http: ^1.2.2
+  # Export file location on native platforms.
+  path_provider: ^2.1.4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/logos/icon.svg
+    - assets/logos/horizontal.svg
+    - assets/logos/stacked.svg
+    - assets/logos/app-icon.svg
