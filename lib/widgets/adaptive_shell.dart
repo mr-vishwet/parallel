@@ -441,20 +441,26 @@ class _DesktopHeader extends StatelessWidget {
               onPressed: () => Navigator.of(context).pop(),
               tooltip: 'Back',
             ),
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w700,
+          Flexible(
+            child: Text(
+              title,
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w700,
+              ),
+              overflow: TextOverflow.ellipsis,
             ),
           ),
           if (subtitle != null) ...[
             const SizedBox(width: 12),
-            Text(
-              subtitle!,
-              style: const TextStyle(
-                fontSize: 13,
-                color: ParallelPalette.muted,
+            Flexible(
+              child: Text(
+                subtitle!,
+                style: const TextStyle(
+                  fontSize: 13,
+                  color: ParallelPalette.muted,
+                ),
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           ],

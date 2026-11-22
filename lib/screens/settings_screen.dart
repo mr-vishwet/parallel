@@ -187,10 +187,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   await controller.setSyncBaseUrl(
                                     _syncController.text,
                                   );
+                                  if (!context.mounted) return;
                                   setState(() => _syncing = true);
                                   final message =
                                       await controller.syncNow();
-                                  setState(() => _syncing = false);
+                                  if (mounted) {
+                                    setState(() => _syncing = false);
+                                  }
                                   if (context.mounted) {
                                     showMessage(context, message);
                                   }

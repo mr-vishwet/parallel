@@ -24,8 +24,14 @@ class AppScope extends InheritedWidget {
   }
 
   @override
-  bool updateShouldNotify(AppScope oldWidget) =>
-      controller != oldWidget.controller;
+  // Always true: the controller is a ChangeNotifier whose instance never
+  // changes, and the scope is rebuilt (by the AnimatedBuilder above it in
+  // app.dart) exactly when the controller notifies. Returning false here
+  // would leave every screen on its first build forever — the diff
+  // screen's spinner-never-clears bug. Dependents rebuild only when the
+  // controller notifies, which is exactly the set of rebuilds the app
+  // needs.
+  bool updateShouldNotify(AppScope oldWidget) => true;
 }
 
 /// Live state of one merge review: the diff, the ticked changes, and the

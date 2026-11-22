@@ -165,7 +165,7 @@ class _RestoreScreenState extends State<RestoreScreen> {
                           }
                         } catch (e) {
                           if (context.mounted) showError(context, e);
-                          setState(() => _restoring = false);
+                          if (mounted) setState(() => _restoring = false);
                         }
                       },
                 child: Text(

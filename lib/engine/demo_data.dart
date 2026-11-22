@@ -1,4 +1,5 @@
 import '../core/constants.dart';
+import '../core/format.dart';
 import 'models.dart';
 
 /// Seeded demo workspace — the V7 canon, as data.
@@ -14,8 +15,17 @@ import 'models.dart';
 class DemoData {
   DemoData._();
 
+  /// The latest clock time any same-day seed snapshot carries (m9,
+  /// 09:41). When same-day times land in the future (first launch before
+  /// 09:41), they clamp to now minus their distance from this anchor, so
+  /// their order survives the clamp — m9 stays after c4 stays after e5.
+  /// Clamping them all to the same `now` collapsed the order and broke
+  /// sceneLastChanged (and every newest-first sort) before 09:41.
+  static const _latestTodayMinutes = 9 * 60 + 41;
+
   /// A time [daysAgo] days before now at [hour]:[minute], clamped to now
-  /// so a seed never lands in the future.
+  /// so a seed never lands in the future. The clamp preserves the
+  /// canonical order of same-day times (see [_latestTodayMinutes]).
   static DateTime demoTime({
     required int daysAgo,
     required int hour,
@@ -24,7 +34,9 @@ class DemoData {
     final now = DateTime.now();
     final base = DateTime(now.year, now.month, now.day, hour, minute)
         .subtract(Duration(days: daysAgo));
-    return base.isAfter(now) ? now : base;
+    if (!base.isAfter(now)) return base;
+    final behind = _latestTodayMinutes - (hour * 60 + minute);
+    return now.subtract(Duration(minutes: behind < 0 ? 0 : behind));
   }
 
   /// The Harbour Light scene titles.
@@ -475,34 +487,43 @@ class DemoData {
   /// seed therefore stops at m9; merge/restore events are appended live.
   static List<ActivityEvent> seedActivity() {
     final now = DateTime.now();
+    // Refs are computed from the same timestamps as the snapshots they
+    // describe — never hardcoded strings. demoTime clamps a same-day time
+    // that is still in the future to now, so a hardcoded 'm9 · Today
+    // 09:41' disagreed with every snapshot view whenever the first launch
+    // happened before 09:41.
+    final m9At = demoTime(daysAgo: 0, hour: 9, minute: 41);
+    final m7At = demoTime(daysAgo: 1, hour: 11, minute: 20);
+    final expAt = now.subtract(const Duration(days: 3));
+    final minAt = now.subtract(const Duration(days: 3, hours: 2));
     return [
       ActivityEvent(
         id: 'ev-m9',
         kind: 'snapshot',
         text: 'Mara locked the ending after the rooftop take',
-        ref: 'm9 · Today 09:41',
-        at: demoTime(daysAgo: 0, hour: 9, minute: 41),
+        ref: 'm9 · ${formatRelative(m9At)}',
+        at: m9At,
       ),
       ActivityEvent(
         id: 'ev-m7',
         kind: 'snapshot',
         text: 'Dev put the storm tape back in scene 5',
-        ref: 'm7 · Yesterday 11:20',
-        at: demoTime(daysAgo: 1, hour: 11, minute: 20),
+        ref: 'm7 · ${formatRelative(m7At)}',
+        at: m7At,
       ),
       ActivityEvent(
         id: 'ev-fork-exp',
         kind: 'branch',
         text: 'Mara forked experimental from m7',
-        ref: 'e1 · 3 days ago',
-        at: now.subtract(const Duration(days: 3)),
+        ref: 'e1 · ${formatRelativeDay(expAt)}',
+        at: expAt,
       ),
       ActivityEvent(
         id: 'ev-fork-min',
         kind: 'branch',
         text: 'Mara forked minimal from m5',
-        ref: 'n1 · 3 days ago',
-        at: now.subtract(const Duration(days: 3, hours: 2)),
+        ref: 'n1 · ${formatRelativeDay(minAt)}',
+        at: minAt,
       ),
     ];
   }

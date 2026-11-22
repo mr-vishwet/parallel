@@ -191,7 +191,7 @@ class _NewBranchScreenState extends State<NewBranchScreen> {
                           }
                         } catch (e) {
                           if (context.mounted) showError(context, e);
-                          setState(() => _saving = false);
+                          if (mounted) setState(() => _saving = false);
                         }
                       },
                 child: Text(

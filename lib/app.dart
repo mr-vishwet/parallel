@@ -76,18 +76,37 @@ class _ParallelAppState extends State<ParallelApp> {
     // is only read when the Navigator is created, so the swapped-in
     // MaterialApp's initialRoute was silently ignored and the app would
     // have stayed on the splash even without the crash.)
-    return AppScope(
-      controller: _controller,
-      child: MaterialApp(
-        title: 'PARALLEL',
-        theme: AppTheme.light,
-        home: const _StartupGate(),
-        onGenerateRoute: _onGenerateRoute,
+    // The AnimatedBuilder sits ABOVE AppScope, and AppScope's
+    // updateShouldNotify always returns true: the controller instance
+    // never changes, so the only way screens learn about a notification
+    // is a rebuild of the scope that marks every dependent dirty. Without
+    // this, no screen ever rebuilds after a controller mutation — the
+    // diff screen starts its review in a post-frame callback and then
+    // sits on its first build, a spinner forever — and deep-linked
+    // screens never re-render once init() completes. (Rebuilding
+    // MaterialApp alone does NOT reach the screens: a route's builder
+    // returns the same widget instance it built once, so the update
+    // short-circuits as identical at the route boundary. The scope
+    // notification is what crosses it.) The Navigator state survives the
+    // rebuild, so routes and the back stack are unaffected.
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (context, _) => AppScope(
+        controller: _controller,
+        child: MaterialApp(
+          title: 'PARALLEL',
+          theme: AppTheme.light,
+          home: const _StartupGate(),
+          onGenerateRoute: _onGenerateRoute,
+        ),
       ),
     );
   }
 
   Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
+    // Routes that take arguments fall back to Projects when the arguments
+    // are missing (a bare web deep link, e.g. /#/diff): a non-nullable
+    // cast here would throw during the route build and blank the app.
     Widget screen;
     switch (settings.name) {
       case Routes.welcome:
@@ -129,58 +148,74 @@ class _ParallelAppState extends State<ParallelApp> {
         final args = settings.arguments as SnapshotsArgs?;
         screen = SnapshotsScreen(branchId: args?.branchId ?? 'main');
       case Routes.snapshotDetail:
-        final args = settings.arguments as SnapshotArgs;
-        screen = SnapshotDetailScreen(
-          branchId: args.branchId,
-          snapshotId: args.snapshotId,
-        );
+        final args = settings.arguments as SnapshotArgs?;
+        screen = args == null
+            ? const ProjectsScreen()
+            : SnapshotDetailScreen(
+                branchId: args.branchId,
+                snapshotId: args.snapshotId,
+              );
       case Routes.diff:
-        final args = settings.arguments as DiffArgs;
-        screen = DiffScreen(
-          sourceId: args.sourceId,
-          targetId: args.targetId,
-        );
+        final args = settings.arguments as DiffArgs?;
+        screen = args == null
+            ? const ProjectsScreen()
+            : DiffScreen(
+                sourceId: args.sourceId,
+                targetId: args.targetId,
+              );
       case Routes.changeDetail:
-        final args = settings.arguments as ChangeArgs;
-        screen = ChangeDetailScreen(
-          changeId: args.changeId,
-          sourceId: args.sourceId,
-          targetId: args.targetId,
-        );
+        final args = settings.arguments as ChangeArgs?;
+        screen = args == null
+            ? const ProjectsScreen()
+            : ChangeDetailScreen(
+                changeId: args.changeId,
+                sourceId: args.sourceId,
+                targetId: args.targetId,
+              );
       case Routes.compare:
         screen = const CompareScreen();
       case Routes.restore:
-        final args = settings.arguments as RestoreArgs;
-        screen = RestoreScreen(
-          branchId: args.branchId,
-          snapshotId: args.snapshotId,
-        );
+        final args = settings.arguments as RestoreArgs?;
+        screen = args == null
+            ? const ProjectsScreen()
+            : RestoreScreen(
+                branchId: args.branchId,
+                snapshotId: args.snapshotId,
+              );
       case Routes.restored:
-        final args = settings.arguments as RestoredArgs;
-        screen = RestoredScreen(
-          branchId: args.branchId,
-          snapshotId: args.snapshotId,
-        );
+        final args = settings.arguments as RestoredArgs?;
+        screen = args == null
+            ? const ProjectsScreen()
+            : RestoredScreen(
+                branchId: args.branchId,
+                snapshotId: args.snapshotId,
+              );
       case Routes.merge:
-        final args = settings.arguments as DiffArgs;
-        screen = MergeScreen(
-          sourceId: args.sourceId,
-          targetId: args.targetId,
-        );
+        final args = settings.arguments as DiffArgs?;
+        screen = args == null
+            ? const ProjectsScreen()
+            : MergeScreen(
+                sourceId: args.sourceId,
+                targetId: args.targetId,
+              );
       case Routes.conflict:
-        final args = settings.arguments as ChangeArgs;
-        screen = ConflictScreen(
-          changeId: args.changeId,
-          sourceId: args.sourceId,
-          targetId: args.targetId,
-        );
+        final args = settings.arguments as ChangeArgs?;
+        screen = args == null
+            ? const ProjectsScreen()
+            : ConflictScreen(
+                changeId: args.changeId,
+                sourceId: args.sourceId,
+                targetId: args.targetId,
+              );
       case Routes.merged:
-        final args = settings.arguments as MergedArgs;
-        screen = MergedScreen(
-          branchId: args.branchId,
-          snapshotId: args.snapshotId,
-          sourceId: args.sourceId,
-        );
+        final args = settings.arguments as MergedArgs?;
+        screen = args == null
+            ? const ProjectsScreen()
+            : MergedScreen(
+                branchId: args.branchId,
+                snapshotId: args.snapshotId,
+                sourceId: args.sourceId,
+              );
       case Routes.timeline:
         final args = settings.arguments as TimelineArgs?;
         screen = TimelineScreen(highlightScene: args?.highlightScene);

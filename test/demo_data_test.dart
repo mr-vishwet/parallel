@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:parallel/core/format.dart';
 import 'package:parallel/engine/demo_data.dart';
 
 void main() {
@@ -100,6 +101,57 @@ void main() {
           reason: 'activity is not newest-first',
         );
       }
+    });
+
+    test('activity refs match the snapshots they describe', () {
+      // The m9/m7 refs must render the same clock time as the snapshot
+      // views (formatRelative of the snapshot's own createdAt) — a
+      // hardcoded ref string disagrees whenever the seed runs before
+      // 09:41 and demoTime clamps the snapshot to now.
+      final harbour =
+          workspace.projects.firstWhere((p) => p.id == 'harbour-light');
+      final main = harbour.branchById('main')!;
+      for (final event in workspace.activity) {
+        if (event.kind != 'snapshot') continue;
+        final snapId = event.ref.split(' · ').first;
+        final snap =
+            main.snapshots.firstWhere((s) => s.id == snapId);
+        expect(
+          event.ref,
+          '$snapId · ${formatRelative(snap.createdAt)}',
+          reason: '${event.id} ref disagrees with ${snap.id}',
+        );
+      }
+    });
+
+    test('no merges on record in the live seed', () {
+      // The deck canon says 2 merges, but in the app's live state main is
+      // still at m9 and the cinematic merge is in review — the user
+      // creates the merges. Welcome and Projects both read this count.
+      expect(workspace.mergeCount, 0);
+      expect(workspace.mergesInReview, 1);
+    });
+
+    test('same-day seed times keep their canonical order', () {
+      // m9 (09:41) > c4 (08:20) > e5 (07:55) must hold even when the seed
+      // runs before 09:41 and the clamp engages — clamping them all to
+      // the same `now` collapsed the order and broke sceneLastChanged.
+      final harbour =
+          workspace.projects.firstWhere((p) => p.id == 'harbour-light');
+      final m9 = harbour
+          .branchById('main')!
+          .snapshots
+          .firstWhere((s) => s.id == 'm9');
+      final c4 = harbour
+          .branchById('cinematic')!
+          .snapshots
+          .firstWhere((s) => s.id == 'c4');
+      final e5 = harbour
+          .branchById('experimental')!
+          .snapshots
+          .firstWhere((s) => s.id == 'e5');
+      expect(m9.createdAt.isAfter(c4.createdAt), isTrue);
+      expect(c4.createdAt.isAfter(e5.createdAt), isTrue);
     });
   });
 }

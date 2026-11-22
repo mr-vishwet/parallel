@@ -202,7 +202,7 @@ class _MergeScreenState extends State<MergeScreen> {
                           }
                         } catch (e) {
                           if (context.mounted) showError(context, e);
-                          setState(() => _merging = false);
+                          if (mounted) setState(() => _merging = false);
                         }
                       },
                 child: Text(_merging ? 'Merging…' : 'Merge into ${target.name}'),

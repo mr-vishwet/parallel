@@ -1,5 +1,6 @@
 import 'package:material_ui/material_ui.dart';
 
+import '../core/format.dart';
 import '../core/routes.dart';
 import '../core/theme.dart';
 import '../state/app_controller.dart';
@@ -82,7 +83,8 @@ class WelcomeScreen extends StatelessWidget {
                       Text(
                         '${project.name} · ${project.branches.length} '
                         'branches · ${project.snapshotCount} snapshots · '
-                        '2 merges on record',
+                        '${plural(controller.workspace.mergeCount, 'merge')} '
+                        'on record',
                         style: const TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w600,
