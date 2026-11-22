@@ -1,183 +1,78 @@
-# PARALLEL — Git for creative work
+<img src="docs/screenshots/app-icon.png" width="96" alt="PARALLEL app icon">
 
-> **v0.1 build — Build Specification.** Branch a project, compare visually,
-> merge only the changes you pick, restore any decision. Local-first; one
-> Flutter codebase for iOS, Android and web.
+# PARALLEL
 
-A film is not one timeline but several: the locked cut, the warmer cut, the
-quieter cut, the wild cut. PARALLEL treats a whole creative project like
-code — branches you can live in, a visual diff in human language, merges
-that take only what you pick, and history that only grows.
+**Git for creative work — branches you can live in.**
 
-## Run it
+[Try the live demo](https://mr-vishwet.github.io/parallel/)
 
-```sh
-flutter pub get
-flutter run                 # phone / emulator
-flutter run -d chrome       # web
-flutter test                # unit tests (engine, diff, models, auth)
-flutter analyze             # lint
-```
+*A build specification. The demo project, its people, and its frame art are illustrative.*
 
-Requires Dart SDK `>=3.6` and Flutter `>=3.27`.
+## The idea
 
-### The sync sketch server (optional)
+A film is never one timeline. It is the locked cut, the warmer cut, the quieter cut, the wild cut — and every editor knows what happens when those versions live in filenames: `final-v7-revised`, the good take overwritten, the decision you can never get back. Source control solved this for code decades ago, but it doesn't express creative intent. A diff of a film shouldn't read like a diff of a file.
 
-```sh
-dart server/sync_stub.dart  # http://127.0.0.1:8080, in-memory only
-```
+PARALLEL treats a whole creative project the way code treats a codebase — as something you can branch, compare, and merge — but in the language of the work itself. A branch is a version of the project you can live in: open it, change it, sit with it, and the original is untouched. A diff reads in plain words: *the opening shot changed; the argument now comes before the night ferry; the grade is warmer across the night scenes.* A merge takes only the changes you pick. And when two branches disagree about the same thing, the app never guesses — you pick, and the choice is recorded.
 
-Then set the URL in the app: Settings → Sync → Sync server URL → **Sync
-now**. With no URL set, sync is off and everything stays local. See
-[`server/README.md`](server/README.md) — the server is a **sketch**, not a
-deployed backend.
+The point isn't version control for its own sake. It's that creative work gets better when trying something costs nothing: fork the cut, go too far, keep the two seconds that worked and leave the rest behind. History only grows, so no decision is ever truly lost.
 
-## What is built (phase 1)
+PARALLEL is local-first: your projects live on your device.
 
-**All 60 V7 screens, as 30 adaptive routes.** Each route renders the phone
-layout below 720 px and the desktop shell (sidebar + wide content) above
-it, so the 30 routes cover the 30 mobile + 30 web screens from the V7
-inventory. No route is a placeholder.
+## What it does
 
-| # | Screen | Route |
-|---|--------|-------|
-| 01 | Projects | `/projects` |
-| 02 | Branch map (glowing rails + snapshot stepper) | `/branch-map` |
-| 03–05 | Branch detail: cinematic / minimal / experimental | `/branch` |
-| 06 | New branch (name + fork-from picker) | `/new-branch` |
-| 07 | Snapshots on a branch, newest first | `/snapshots` |
-| 08 | Snapshot detail (message, author, time, changes) | `/snapshot` |
-| 09 | Visual diff in human language | `/diff` |
-| 10 | One change up close | `/change` |
-| 11 | Compare any two branches | `/compare` |
-| 12 | Restore one decision (scope: returns / stays changed) | `/restore` |
-| 13 | Restored | `/restored` |
-| 14 | Merge review | `/merge` |
-| 15 | Conflict: two versions, you pick | `/conflict` |
-| 16 | Merged (with what was left behind, on purpose) | `/merged` |
-| 17 | Timeline: 14 scenes, last-changed marks | `/timeline` |
-| 18 | Search across branches | `/search` |
-| 19 | Activity feed | `/activity` |
-| 20 | Settings (project, sharing, sync, danger zone) | `/settings` |
-| 21 | Welcome (guest-first) | `/welcome` |
-| 22 | Guest mode explainer (view-only) | `/guest` |
-| 23 | Sign in | `/sign-in` |
-| 24 | Create account | `/create-account` |
-| 25 | Verify (6-digit code) | `/verify` |
-| 26 | Upgrade prompt (guest hits a gated action) | `/upgrade` |
-| 27 | Migrate (0 to move — guests create nothing) | `/migrate` |
-| 28 | Account home | `/account` |
-| 29 | Connected accounts | `/connected` |
-| 30 | Data controls (sign out / export / delete) | `/data-controls` |
+### The demo project
 
-**The engine is real.** `lib/engine/branch_engine.dart` is pure Dart (no
-I/O, fully tested): branching (pointer, not data copy), snapshot id
-allocation, diffing with conflict detection (same scene + same kind after
-the fork), merge planning (only picked changes travel; conflicts must be
-resolved — the app never guesses), restore (appends a new snapshot;
-nothing is rewritten), search, and per-scene last-changed computation.
+The demo opens on **Harbour Light**, a 3:48 short film in 14 scenes, forked four ways:
 
-**Auth model (from the V7 spec).** PARALLEL needs login for its core:
-guests browse the demo read-only; branching, merging, restoring,
-snapshotting and creating route guests to the upgrade prompt. Accounts
-are local-only in v0.1 (SHA-256 hashed passwords in on-device storage;
-the verification code is a local demo code shown on the verify screen,
-clearly labelled — no email is sent yet). Apple/Google sign-in buttons
-explain they are not connected yet instead of pretending.
+- **main** — the locked cut, 9 snapshots, 3:48
+- **cinematic** — long takes, warm grade, 4 snapshots, 4:02
+- **minimal** — no voiceover, no score in the middle third, 3 snapshots, 3:31
+- **experimental** — scenes reordered, ending without music, 5 snapshots, 3:56
 
-**Persistence.** The whole workspace is one JSON document in
-`shared_preferences` (local-first). Export copies it to the clipboard, or
-saves a file on native platforms. Settings → Danger zone can reset the
-workspace to the seeded demo.
+21 snapshots across the four branches. Two more projects sit alongside it: **Launch Teaser**, a 0:30 brand film with 2 branches and 8 snapshots, and **Field Notes**, a 24-frame photo series with 1 branch and 5 snapshots — 3 projects, 7 branches, 34 snapshots in all. A cinematic → main merge is already in review, with one conflict waiting on the opening shot.
 
-**Demo data (seeded, labelled as demo).** Harbour Light — a 3:48 short
-film, 14 scenes, 4 branches (main 9, cinematic 4, minimal 3, experimental
-5 = 21 snapshots), the cinematic→main merge in review with its 1 conflict
-(the opening shot). Plus Launch Teaser (2 branches, 8 snapshots) and Field
-Notes (1 branch, 5 snapshots): 3 projects, 7 branches, 34 snapshots.
-Demo timestamps are relative to first launch so "Today 09:41" stays true.
+### Branches you can live in
 
-## Project layout
+The **branch map** shows the whole project at a glance: four glowing timeline rails, one per branch, with fork points where each branch left the last and a dashed line for the open merge. A snapshot stepper moves through a branch one saved state at a time, so you can step between timelines and feel how the film changes.
 
-```
-lib/
-  main.dart                entry point
-  app.dart                 shell: controller, theme, 30 routes
-  core/                    theme, constants, format, routes
-  engine/                  models, branch/diff/merge engine, demo seed
-  services/                local store, auth, sync client, export
-  state/                   AppController (ChangeNotifier) + AppScope
-  screens/                 the 30 screens
-  widgets/                 adaptive shell, branch map, rows, logo
-test/                      engine, diff, models, demo data, auth
-web/                       index.html, manifest.json
-assets/logos/              the 4 PARALLEL logo SVGs
-server/                    sync sketch: stub + OpenAPI contract + docs
-```
+Each branch has its own page: runtime against main, snapshot count, how many of the 14 scenes changed, and the snapshot list newest first. Starting a **new branch** means naming it and picking the snapshot to fork from — everything before that snapshot comes along, nothing after it does, and forking never changes main.
 
-## Honest limits (v0.1)
+### Snapshots
 
-- **No real backend.** Accounts, data and sync are local-only; the server
-  is an in-memory sketch. Nothing is deployed.
-- **No social sign-in, no email.** Apple/Google buttons say so; the
-  verify code is a local demo code.
-- **No video playback.** "Watch" actions open the timeline / branch
-  instead. Frame art on diff and snapshot screens is illustrative art
-  drawn in code, not stills — real frame thumbnails arrive with the
-  media pipeline.
-- **Single light theme.** The V7 palette is the one theme, structured
-  (`ParallelPalette` tokens) so phase 2 can add a dark variant. No
-  dual-theme system is built yet.
-- **Storage figures are demo figures.** "2.1 GB on this device" describes
-  the seeded demo workspace, not a measurement.
-- **The V7 deck's scene marks were illustrative.** The timeline computes
-  last-changed-per-scene from real snapshot history, so a few marks differ
-  from the deck's frozen map (e.g. scene 4, changed most recently on main
-  by m6). The engine is the source of truth.
-- **Merge runtime is computed from selected changes.** The deck's merged
-  screen says main runs 4:02; the engine lands it at 3:50 with the 3
-  canonical selections (opening +2s) and 4:02 only when the runtime change
-  is also selected. Computed, not asserted.
+Every saved state is a snapshot with a **message, an author, and a timestamp** — "Held the last light shot for 6 more seconds", Mara, Today 08:20 — so history reads like a diary of decisions, not a pile of files. A snapshot's detail page lists exactly what changed in it: the ending held 6 seconds longer, the rooftop take replacing the balcony take, the credits starting 2 seconds later. Snapshots are never rewritten: restoring or branching always adds a new one, and history only grows.
 
-## Phase 2 (not built)
+### Compare, and the visual diff
 
-- Dual dark/light themes (palette tokens are ready for the swap).
-- Real backend + auth (email verification, Apple/Google, multi-device
-  sync with conflict resolution) — the sketch contract in `server/` is
-  the starting point.
-- Media pipeline: real frame thumbnails, in-app playback, EDL/XML export.
-- Drift/SQLite if the workspace document outgrows a single JSON doc.
-- Per-object merge (the catalog's per-object granularity) beyond the
-  current per-change granularity.
-- CI: see the appendix — the workflow YAML is included here for adding
-  via the GitHub web UI (the app token cannot push workflow files).
+**Compare** puts any two branches side by side and reads the difference between them in plain words, not between files. The **visual diff** between cinematic and main lists five changes — the opening shot, the scene order, the grade, the runtime, the voiceover — and you tick the ones the merge should take. Each change opens up close: before-and-after frames, what changed, and *why it matters* — the harbour opening sets the film by the water; the boathouse opening sets it inside. The next three scenes read differently either way.
 
-## Appendix — CI workflow (add via the GitHub web UI)
+### Merge — only what you pick
 
-Save this as `.github/workflows/flutter.yml` in the repo (web UI → Add
-file → Create new file). It is not in the repo itself because the GitHub
-App token used for pushes cannot write workflow files.
+**Merge review** shows the changes you selected and refuses to proceed while a conflict is unresolved. A **conflict** screen puts the two versions in front of you — the boathouse, reframed, against the harbour dawn — explains what happens to the losing side (it stays on its branch, exactly where it was; nothing is deleted by a merge), and lets you pick. The **merged** screen then shows what landed and, deliberately, what was left behind on purpose: the changes you didn't pick stay on their branch for the longer cut.
 
-```yaml
-name: Flutter
+### Restore one decision
 
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+Changed your mind about one decision, not the whole branch? **Restore** brings back a single snapshot — the second voiceover pass, say — and shows you the scope first: what returns, and what stays changed. The snapshots after it stay exactly as they are. Restoring creates a new snapshot, so the undo itself is part of history.
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.27.0'
-          channel: stable
-      - run: flutter pub get
-      - run: flutter analyze
-      - run: flutter test
-      - run: flutter build web --release
-```
+### Timeline, search, activity
+
+The **timeline** lists all 14 scenes, one row each, with a mark showing which branch last changed each scene. **Search** looks across branches — search "voiceover" and you get every snapshot that touched it, on every branch, plus the related scenes. The **activity feed** records every branch, merge, and restore with the person attached: Mara merged cinematic into main, Mara restored the second voiceover pass, Dev forked experimental from m7. Nothing here is automatic; everything has a name on it.
+
+**Settings** gathers the project, storage, export, sharing, and archive controls, plus review links for sharing a read-only cut.
+
+### Guest-first
+
+You can browse the whole demo without an account — guest mode is a viewing room: open every branch, read every snapshot, follow every diff. Branching, merging, restoring, and snapshotting need an account, and the app says so at the moment you try, not before. Signing in is email plus a 6-digit code; your account home keeps your projects, collaborators, connected accounts, and data controls (sign out, export everything, delete account) in one place. Guests create nothing, so there is nothing to lose by looking around first.
+
+## The interface
+
+### Mobile — all 30 screens
+
+<img src="docs/screenshots/mobile-grid.jpg" width="800" alt="PARALLEL mobile flow: all 30 screens, from Projects and the branch map through diff, merge and restore to sign-in and account">
+
+The full mobile flow: Projects and the branch map, the four branch pages, snapshots, the visual diff, compare, restore, merge and its conflict, the timeline, search, activity, settings — then the guest-first account screens, from Welcome to sign-out.
+
+### Web — all 30 screens
+
+<img src="docs/screenshots/web-grid.jpg" width="800" alt="PARALLEL web flow: all 30 screens in the desktop shell, from Projects and the branch map through diff, merge and restore to sign-in and account">
+
+The same thirty screens in the desktop shell: sidebar navigation, the branch map and snapshot tables at full width, the diff and conflict screens with their before-and-after frames side by side.
